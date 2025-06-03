@@ -29,37 +29,33 @@ public class UsuarioServices {
     @Autowired
     private EgresoRepository egresoRepository;
 
-
-
     @Autowired
     private TokenService tokenService;
 
-    public String Login2(String email,String Password){
-        UsuarioEntity usuario=usuarioRepository.findByEmail(email).orElse(null);
-        if (usuario==null){
+    public String Login2(String email, String Password) {
+        UsuarioEntity usuario = usuarioRepository.findByEmail(email).orElse(null);
+        if (usuario == null) {
             return "no existe el usuario";
         }
-        if (Objects.equals(usuario.getPassword(), Password) && Objects.equals(usuario.getEmail(), email)){
+        if (Objects.equals(usuario.getPassword(), Password) && Objects.equals(usuario.getEmail(), email)) {
 
             return "usuario Correcto";
-        }else {
+        } else {
             return "contraseña o email incorrecto";
         }
 
     }
 
-    public AllDataResponse getAllData(){
-      List <CuentaEntity> cuenta =cuentaRepository.findAll();
-      List <IngresoEntity> ingreso =ingresoRepository.findAll();
-        List <EgresoEntity> egreso =egresoRepository.findAll();
+    public AllDataResponse getAllData() {
+        List<CuentaEntity> cuenta = cuentaRepository.findAll();
+        List<IngresoEntity> ingreso = ingresoRepository.findAll();
+        List<EgresoEntity> egreso = egresoRepository.findAll();
 
-        AllDataResponse response= new AllDataResponse(cuenta,ingreso,egreso);
+        AllDataResponse response = new AllDataResponse(cuenta, ingreso, egreso);
         return response;
 
-
-
-
     }
+
     public Map<String, Object> login(String email, String password) {
         UsuarioEntity usuario = usuarioRepository.findByEmail(email).orElse(null);
         if (usuario == null) {
@@ -69,22 +65,28 @@ public class UsuarioServices {
             String token = tokenService.generateToken(email);
             Map<String, Object> response = new HashMap<>();
             response.put("usuario", usuario);
-            response.put("token",token);
+            response.put("token", token);
             return response;
         } else {
             return null;
         }
     }
-    public UsuarioEntity createUsuario(UsuarioEntity newUsuario) {
-        try {
-            UsuarioEntity nuevoUsuario =newUsuario;
-            return usuarioRepository.save(nuevoUsuario);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
+
+    public UsuarioEntity findByEmail(String email) {
+        return usuarioRepository.findByEmail(email).orElse(null);
     }
 
-
-
+    /*
+     * public UsuarioEntity createUsuario(UsuarioEntity usuario) {
+     * try {
+     * return usuarioRepository.save(usuario);
+     * } catch (Exception ex) {
+     * ex.printStackTrace();
+     * return null;
+     * }
+     * }
+     */
+    public UsuarioEntity createUsuario(UsuarioEntity usuario) {
+        return usuarioRepository.save(usuario);
+    }
 }

@@ -4,8 +4,11 @@ import com.example.proyectosw2.Entity.UsuarioEntity;
 
 import com.example.proyectosw2.Services.UsuarioServices;
 import com.example.proyectosw2.dto.AllDataResponse;
+import com.example.proyectosw2.dto.UsuarioInput;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
@@ -31,19 +34,24 @@ public class UsuarioController {
 
     @QueryMapping
     public AllDataResponse getAllData() {
-    return usuarioServices.getAllData();
-    }
-    @QueryMapping
-    public UsuarioEntity createUsuario(@Argument int id, @Argument String nombre,@Argument  String email,@Argument  String password) {
-        try {
-            UsuarioEntity nuevoUsuario = new UsuarioEntity(id, nombre, email, password);
-            return usuarioServices.createUsuario(nuevoUsuario);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
+        return usuarioServices.getAllData();
     }
 
+    @MutationMapping
+    public UsuarioEntity createUsuario(@Argument("input") UsuarioInput input) {
+        UsuarioEntity existingUsuario = usuarioServices.findByEmail(input.getEmail());
+        if (existingUsuario != null) {
+            throw new IllegalArgumentException("El usuario con el email " + input.getEmail() + " ya existe.");
+        }
+
+        UsuarioEntity nuevoUsuario = UsuarioEntity.builder()
+                .nombre(input.getNombre())
+                .email(input.getEmail())
+                //.password(input.getPassword())
+                .build();
+
+        return usuarioServices.createUsuario(nuevoUsuario);
+    }
 
     public static class UsuarioLoginResponse {
         private UsuarioEntity usuario;
