@@ -1,81 +1,52 @@
 type Query {
-    login(email: String, password: String): Usuario
-    getCategoriaById(id: String): CategoriaEntity
-    getCuentaById(usuarioID: ID): [CuentaEntity]
-    egreso(id: String): EgresoEntity
-    ingreso(id: String): IngresoEntity
-    getAllData: AllDataResponse
+    login(input:UsuarioInput): Usuario
+    obtenerUsuarios: [Usuario]
+    obtenerUsuario (id: String): Usuario
+    obtenerVehiculos: [Vehiculo]
 }
 
 
 type Mutation {
-    createUsuario(input: UsuarioInput!): Usuario
-    createCuenta(id: ID, nombre: String, saldo: String, usuarioID: String): String
-    createEgreso(id: ID, concepto: String, monto: Float, fechaEgreso: String,cuentaID:ID ,categoriaID:ID): String
-    createIngreso(id:ID,concepto:String ,monto:Float,fechaIngreso:String,cuentaID:ID,categoriaID:ID ): String
+    crearUsuario(input: UsuarioInput!): Usuario
+    crearVehiculo(input: VehiculoInput): Vehiculo
 }
 
 input UsuarioInput {
-    nombre: String!
+    nombre: String
     email: String!
     password: String!
+    rol_id: Int
 }
 
-type Usuario {
-    id: String
+type Usuario{
+    id:String
     nombre: String
     email: String
-    #password: String
+    password: String
     token: String
+    rol_id: Int
 }
 
-type CategoriaEntity {
+input VehiculoInput {
+    marca: String
+    modelo: String
+    anio: Int
+    color: String
+    placa: String
+    tipo: String
+    estado: String
+    usuario_id: String
+}
+
+type Vehiculo {
     id: String
-    nombre: String
-}
-
-type CuentaEntity {
-    id: ID
-    nombre: String
-    saldo: Float
-    usuarioID: ID
-}
-
-type EgresoEntity {
-    id: ID
-    concepto: String
-    monto: Float
-    fechaEgreso: String
-    cuentaID: ID
-    categoriaID: ID
-}
-
-type IngresoEntity {
-    id: ID
-    concepto: String
-    monto: Float
-    fechaIngreso: String
-    cuentaID: ID
-    categoriaID: ID
-}
-
-input EgresoInput {
-    concepto: String
-    monto: Float
-    fechaEgreso: String
-    cuentaID: String
-    categoriaID: String
-}
-
-input IngresoInput {
-    concepto: String
-    monto: Float
-    fechaIngreso: String
-    cuentaID: String
-    categoriaID: String
-}
-type AllDataResponse {
-    cuentas: [CuentaEntity]
-    ingresos: [IngresoEntity]
-    egresos: [EgresoEntity]
+    marca: String
+    modelo: String
+    anio: Int
+    color: String
+    placa: String
+    tipo: String
+    estado: String
+    usuario_id: String
+    usuario_nombre: String
 }

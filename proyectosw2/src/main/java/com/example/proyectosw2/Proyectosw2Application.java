@@ -1,4 +1,5 @@
 package com.example.proyectosw2;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,4 +10,13 @@ public class Proyectosw2Application {
 		SpringApplication.run(Proyectosw2Application.class, args);
 	}
 
+	/* @Bean
+	public GraphQlSourceBuilderCustomizer customizer(FederationSchemaFactory factory) {
+		return builder -> builder.schemaFactory(factory::createGraphQLSchema);
+	}
+
+	@Bean
+	FederationSchemaFactory federationSchemaFactory() {
+		return new FederationSchemaFactory();
+	} */
 }

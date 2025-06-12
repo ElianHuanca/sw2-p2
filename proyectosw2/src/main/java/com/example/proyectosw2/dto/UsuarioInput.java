@@ -7,4 +7,5 @@ public class UsuarioInput {
     private String nombre;
     private String email;
     private String password;
+    private Integer rol_id;
 }
